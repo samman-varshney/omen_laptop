@@ -1,4 +1,5 @@
 "use client";
+import FullyCustomExample from "@/components/DefaultExample";
 import { NAV_ITEMS } from "@/components/FloatingNavbar/constants";
 import { FloatingNavbar } from "@/components/FloatingNavbar/FloatingNavbar";
 import FloatingTestimonials, {
@@ -21,6 +22,7 @@ export default function Home() {
       <Scrollytelling />
       <FloatingTestimonials data={DEFAULT_DATA} />
       <FloatingNavbar items={demoItems} />
+      <FullyCustomExample />
     </main>
   );
 }
