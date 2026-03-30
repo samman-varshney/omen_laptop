@@ -1,5 +1,5 @@
 "use client";
-import FullyCustomExample from "@/components/DefaultExample";
+import FullyCustomExample from "@/components/HeroUnfold/DefaultExample";
 import { NAV_ITEMS } from "@/components/FloatingNavbar/constants";
 import { FloatingNavbar } from "@/components/FloatingNavbar/FloatingNavbar";
 import FloatingTestimonials, {

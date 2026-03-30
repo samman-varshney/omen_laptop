@@ -58,16 +58,16 @@ export const HeroUnfold: React.FC<HeroUnfoldProps> = ({
       const html = document.documentElement;
       const originalScrollBehavior = html.style.scrollBehavior;
       html.style.scrollBehavior = 'auto'; // Force instant scrolling
-      
+
       // Calculate the exact absolute top of the container in the document
       // This is bulletproof against browser clamping double-dips
       const targetY = window.scrollY + containerRef.current.getBoundingClientRect().top;
       window.scrollTo(0, targetY);
-      
+
       requestAnimationFrame(() => {
         html.style.scrollBehavior = originalScrollBehavior;
       });
-      
+
       setShouldAdjustScroll(false);
     }
   }, [shouldAdjustScroll]);
