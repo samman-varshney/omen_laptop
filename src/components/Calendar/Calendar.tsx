@@ -21,6 +21,17 @@ export default function Calendar() {
     const [heatmap, setHeatmap] = useState<boolean>(false);
     const [customImgs, setCustomImgs] = useState<Record<string, string>>({});
     
+    useEffect(() => {
+        try {
+            const stored = localStorage.getItem('calendar_imgs_db');
+            if (stored) {
+                setCustomImgs(JSON.parse(stored));
+            }
+        } catch (e) {
+            console.error('Failed to parse custom images from local storage', e);
+        }
+    }, []);
+    
     const [ranges, setRanges] = useState<DateRange[]>([]);
     const [pickStart, setPickStart] = useState<{ d: number; m: number; y: number } | null>(null);
     const [rangeTooltip, setRangeTooltip] = useState<DateRangeTooltip | null>(null);
@@ -44,7 +55,18 @@ export default function Calendar() {
     const mKey = `${year}::${month}`;
     const notes = get(year, month);
     const customImg = customImgs[mKey] || null;
-    
+    const handleUploadImg = (img: string) => {
+        setCustomImgs(p => {
+            const newState = { ...p, [mKey]: img };
+            try {
+                localStorage.setItem('calendar_imgs_db', JSON.stringify(newState));
+            } catch (e) {
+                console.error('Failed to save image to storage', e);
+            }
+            return newState;
+        });
+    };
+
     const theme = useTheme(month, dark, customImg);
     const w = useWindowWidth();
     const isMob = w < 700;
@@ -153,7 +175,7 @@ export default function Calendar() {
                 display: isMob ? 'block' : 'grid',
                 gridTemplateColumns: 'minmax(288px,358px) 1fr',
                 gap: 20,
-                alignItems: 'stretch',
+                alignItems: 'start',
             }}>
                 <div 
                     ref={calRef} 
@@ -173,7 +195,7 @@ export default function Calendar() {
                         year={year} 
                         theme={theme} 
                         custom={customImg}
-                        onUpload={(img: string) => setCustomImgs(p => ({ ...p, [mKey]: img }))} 
+                        onUpload={handleUploadImg} 
                     />
 
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 18px 4px' }}>
