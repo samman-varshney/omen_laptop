@@ -7,6 +7,7 @@ import FloatingTestimonials, {
 } from "@/components/FloatingTestimonials/FloatingTestimonials";
 import Scrollytelling from "@/components/Scrollytelling";
 import { useMemo } from "react";
+import Calendar from "@/components/Calendar/Calendar";
 
 export default function Home() {
   const demoItems = useMemo(
@@ -23,6 +24,9 @@ export default function Home() {
       <FloatingTestimonials data={DEFAULT_DATA} />
       <FloatingNavbar items={demoItems} />
       <FullyCustomExample />
+      <div style={{ marginTop: '50px' }}>
+         <Calendar />
+      </div>
     </main>
   );
 }
