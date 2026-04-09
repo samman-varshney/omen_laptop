@@ -91,6 +91,8 @@ export default function Calendar() {
 
     const handleDay = useCallback((day: number) => {
         if (!pickStart) { 
+            setRanges([]);
+            setRangeTooltip(null);
             setPickStart({ d: day, m: month, y: year }); 
         } else {
             let s = pickStart;
@@ -115,11 +117,15 @@ export default function Calendar() {
         } else {
             add(year, month, data);
         }
+        setRanges([]);
+        setPickStart(null);
         setModal(null);
     };
 
     const handleModalDelete = (id: string) => { 
         del(year, month, id); 
+        setRanges([]);
+        setPickStart(null);
         setModal(null); 
     };
 
@@ -280,7 +286,11 @@ export default function Calendar() {
                                     Add Note
                                 </button>
                                 <button 
-                                    onClick={() => setRangeTooltip(null)} 
+                                    onClick={() => {
+                                        setRanges([]);
+                                        setPickStart(null);
+                                        setRangeTooltip(null);
+                                    }} 
                                     className="ibtn" 
                                     style={{
                                         padding: '5px 9px', borderRadius: 7,
