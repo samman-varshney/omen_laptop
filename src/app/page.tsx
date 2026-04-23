@@ -8,7 +8,7 @@ import FloatingTestimonials, {
 import Scrollytelling from "@/components/Scrollytelling";
 import { useMemo } from "react";
 import Calendar from "@/components/Calendar/Calendar";
-
+import DemoImageGridPreviewer from "@/components/Grid/ImageGriidPreviewer";
 export default function Home() {
   const demoItems = useMemo(
     () =>
@@ -25,8 +25,9 @@ export default function Home() {
       <FloatingNavbar items={demoItems} />
       <FullyCustomExample />
       <div style={{ marginTop: '50px' }}>
-         <Calendar />
+        <Calendar />
       </div>
+      <DemoImageGridPreviewer />
     </main>
   );
 }
