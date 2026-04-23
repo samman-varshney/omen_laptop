@@ -75,16 +75,16 @@ export function ImageGridPreviewer({
     // Pre-create 9 absolutely-positioned cell wrappers inside the glass
     gcRefs.current = sliced.map((src, i) => {
       const wrap = document.createElement("div");
-      wrap.style.cssText = `position:absolute;overflow:hidden;width:${sCW}px;height:${sCH}px;`;
+      wrap.className = "absolute overflow-hidden";
+      wrap.style.width = `${sCW}px`;
+      wrap.style.height = `${sCH}px`;
 
       const img = document.createElement("img");
       img.src = src;
       img.draggable = false;
-      img.style.cssText = `
-        position:absolute;top:0;left:0;
-        width:${sCW}px;height:${sCH}px;
-        object-fit:cover;display:block;pointer-events:none;
-      `;
+      img.className = "absolute top-0 left-0 object-cover block pointer-events-none";
+      img.style.width = `${sCW}px`;
+      img.style.height = `${sCH}px`;
       wrap.appendChild(img);
       glass.insertBefore(wrap, glass.firstChild);
       return wrap;
@@ -164,21 +164,19 @@ export function ImageGridPreviewer({
         onMouseEnter={onEnter}
         onMouseMove={onMove}
         onMouseLeave={onLeave}
+        className="grid cursor-none select-none"
         style={{
-          display: "grid",
           gridTemplateColumns: `repeat(3, ${width}px)`,
           gridTemplateRows: `repeat(3, ${height}px)`,
           gap: `${GAP}px`,
-          cursor: "none",
-          userSelect: "none",
         }}
       >
         {sliced.map((src, i) => (
-          <div key={i} style={{ width, height, overflow: "hidden", borderRadius: 2 }}>
+          <div key={i} className="overflow-hidden rounded-[2px]" style={{ width, height }}>
             <img
               src={src}
               draggable={false}
-              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", pointerEvents: "none" }}
+              className="w-full h-full object-cover block pointer-events-none"
             />
           </div>
         ))}
@@ -187,45 +185,24 @@ export function ImageGridPreviewer({
       {/* Magnifying glass — positioned via RAF, never re-rendered */}
       <div
         ref={glassRef}
+        className="fixed top-0 left-0 rounded-full overflow-hidden pointer-events-none z-[9999] opacity-0 will-change-transform transition-opacity duration-[180ms] ease-in bg-[#0f0f0f]"
         style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
           width: glassDiameter,
           height: glassDiameter,
-          borderRadius: "50%",
-          overflow: "hidden",
-          pointerEvents: "none",
-          zIndex: 9999,
-          opacity: 0,
-          willChange: "transform",
-          transition: "opacity 0.18s ease",
           outline: "1.5px solid rgba(255,255,255,0.22)",
           boxShadow: "0 0 0 1px rgba(0,0,0,0.6), 0 14px 48px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.06)",
-          backgroundColor: "#0f0f0f",
         }}
       >
         {/* Vignette */}
-        <div style={{
-          position: "absolute", inset: 0, borderRadius: "50%", zIndex: 1,
-          background: "radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.2) 100%)",
-          pointerEvents: "none",
-        }} />
+        <div
+          className="absolute inset-0 rounded-full z-[1] pointer-events-none"
+          style={{
+            background: "radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.2) 100%)",
+          }}
+        />
         {/* Crosshair */}
-        <div style={{
-          position: "absolute", top: "50%", left: "50%",
-          transform: "translate(-50%,-50%)",
-          zIndex: 2, pointerEvents: "none",
-          width: 1, height: 18,
-          background: "rgba(255,255,255,0.28)",
-        }} />
-        <div style={{
-          position: "absolute", top: "50%", left: "50%",
-          transform: "translate(-50%,-50%)",
-          zIndex: 2, pointerEvents: "none",
-          width: 18, height: 1,
-          background: "rgba(255,255,255,0.28)",
-        }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[2] pointer-events-none w-[1px] h-[18px] bg-white/30" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[2] pointer-events-none w-[18px] h-[1px] bg-white/30" />
       </div>
     </>
   );
@@ -247,7 +224,7 @@ const DEMO_IMAGES = [
 
 export default function DemoImageGridPreviewer() {
   return (
-    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#0f0f0f" }}>
+    <div className="min-h-screen flex items-center justify-center bg-[#0f0f0f]">
       <ImageGridPreviewer
         images={DEMO_IMAGES}
         width={260}
